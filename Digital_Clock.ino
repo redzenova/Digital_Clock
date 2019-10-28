@@ -15,6 +15,8 @@ const uint8_t buzzer = 3;
 int8_t MENU = 0;
 int8_t SUB_MENU = 1;
 int8_t SET_SUB_MENU = 1;
+int8_t DATE_SUB_MENU = 1;
+
 int8_t brightness = 8;
 int8_t x = 2;
 int8_t level[5] = {0, 128, 256, 512, 1023};
@@ -28,6 +30,10 @@ int8_t  hour  = 20,
 uint8_t  S_minute = 0,
          S_sec = 0;
 
+int8_t  day = 29,
+        mon = 10;
+int     year = 2562;
+
 unsigned long          S_msec = 0;
 unsigned long     millis_msec = 0;
 
@@ -38,12 +44,13 @@ bool Lock_sub_menu_btn = false ;
 bool set_time = false;
 bool no_beep = false;
 
-bool st_state[10] = {0};
+bool st_state[20] = {0};
 
 uint8_t conf_state = 1;
 const char menu_screen[][10]     = {" ", "SET", "STOP", "COUNT", "ALARM", "EXIT"};
 const char menu_set_screen[][10] = {" ", "SET_Time", "SET_Date", "SET_Led", "SET_Buzz", "SET_EXIT"};
 const char menu_set_time_screen[][20] = {" ", "SET_Time_HR", "SET_Time_MN", "SET_Time_SEC", "SET_Time_EXIT"};
+const char menu_set_date_screen[][20] = {" ", "SET_Date_DAY", "SET_Date_MON", "SET_Date_YEAR", "SET_Date_EXIT"};
 
 unsigned long delaytime = 50;
 
@@ -113,67 +120,7 @@ void loop() {
   }
 
   if (MENU == 2) {
-    if (Lock_menu_btn != true) {
-      if (digitalRead(btn[1]) == LOW) {
-        beep();
-        delay(120);
-        clear_display();
-        st_state[5] = true;
-        Lock_menu_btn = true;
-      }
-    }
-
-
-    if (st_state[5] == true) {
-      if (digitalRead(btn[3]) == LOW) {
-        beep();
-        delay(120);
-        StopStart = true;
-        millis_msec = millis();
-      }
-
-      if (digitalRead(btn[2]) == LOW) {
-        beep();
-        delay(120);
-        StopStart = false;
-      }
-
-      if (digitalRead(btn[0]) == LOW) {
-        beep();
-        delay(120);
-        S_msec = 0;
-        S_sec = 0;
-        S_minute = 0;
-        clear_display();
-      }
-
-      if (digitalRead(btn[1]) == LOW) {
-        beep();
-        delay(120);
-        clear_display();
-        st_state[5] = false;
-        Lock_menu_btn = false;
-      }
-
-      if (StopStart != false) {
-        if (millis() - millis_msec > 1) {
-          millis_msec = millis();
-          S_msec+=128;
-          tone(buzzer, 2300, 20);
-          if (S_msec > 1000) {
-            beep();
-            S_sec++;
-            S_msec = 0;
-          }
-          if (S_sec > 59) {
-            tone(buzzer, 1300, 20);
-            S_minute++;
-            S_sec = 0;
-          }
-        }
-      }
-    }
-
+    STOP_Menu();
   }
 
   if (MENU == 3) {
@@ -211,31 +158,32 @@ void loop() {
   if (MENU == 1 && st_state[2] == true) {
     screen(menu_set_time_screen[SET_SUB_MENU]);
   }
+  if (MENU == 1 && st_state[6] == true) {
+    screen(menu_set_date_screen[DATE_SUB_MENU]);
+  }
   if (MENU == 1 && SUB_MENU == 3 && st_state[3] == true) {
     screen("SET_LED_VAL");
   }
   if (MENU == 1 && st_state[4] == true) {
-
     if (no_beep == true) {
       screen("SET_BUZZER_NO");
     }
     if (no_beep == false) {
       screen("SET_BUZZER_YES");
     }
-
   }
   if (MENU == 2 && st_state[5] == true) {
     screen("STOPWACTCH");
   }
   if (MENU != 6 && st_state[1] != true && st_state[2] != true && st_state[3] != true
-      && st_state[4] != true && st_state[5] != true  ) {
+      && st_state[4] != true && st_state[5] != true && st_state[6] != true ) {
     screen(menu_screen[MENU]);
   }
 
-  Serial.print("St[5] = ");
-  Serial.print(st_state[5]);
-  Serial.print(" S_msec = ");
-  Serial.println(S_msec);
+  Serial.print("St[6] = ");
+  Serial.print(st_state[6]);
+  Serial.print(" SET_SUB_MENU = ");
+  Serial.println(SET_SUB_MENU);
 
 }
 

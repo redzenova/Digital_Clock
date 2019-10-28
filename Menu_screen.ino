@@ -230,4 +230,46 @@ void screen(String mode) {
     print_tiny_char( 25, 3, (S_msec/10) %10 + '0');
     print_tiny_char( 29, 3, S_msec %10 + '0');
   }
+
+  if (mode == "SET_Date_DAY") {
+    /*=== Set->Date->DAY Screen ===*/
+    arrow();
+    print_tiny_char( 5, 1, 'D');
+    print_tiny_char( 9, 1, 'A');
+    print_tiny_char( 13, 1, 'Y');
+    print_tiny_char( 17, 1, ':');
+    print_tiny_char( 21, 1, day /10 + '0');
+    print_tiny_char( 25, 1, day %10 + '0');
+  }
+
+  if (mode == "SET_Date_MON") {
+    /*=== Set->Date->MON Screen ===*/
+    arrow();
+    print_tiny_char( 5, 1, 'M');
+    print_tiny_char( 9, 1, 'O');
+    print_tiny_char( 13, 1, 'N');
+    print_tiny_char( 17, 1, ':');
+    print_tiny_char( 21, 1, mon /10 + '0');
+    print_tiny_char( 25, 1, mon %10 + '0');
+  }
+
+  if (mode == "SET_Date_YEAR") {
+    /*=== Set->Date->YEAR Screen ===*/
+    print_tiny_char( 2, 1, 'Y');
+    print_tiny_char( 6, 1, 'A');
+    print_tiny_char( 10, 1, 'R');
+    print_tiny_char( 17, 1, year/1000 +'0');
+    print_tiny_char( 21, 1,(year/100)%10 + '0');
+    print_tiny_char( 25, 1,(year/10) %10 + '0');
+    print_tiny_char( 29, 1, year %10 + '0');
+  }
+
+  if (mode == "SET_Date_EXIT") {
+    /*=== SET_Date_EXIT Screen ===*/
+    arrow();
+    print_tiny_char( 5, 1, 'E');
+    print_tiny_char( 9, 1, 'X');
+    print_tiny_char( 13, 1, 'I');
+    print_tiny_char( 17, 1, 'T');
+  }
 }
